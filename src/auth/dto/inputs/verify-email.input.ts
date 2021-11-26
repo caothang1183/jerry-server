@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class ConfirmUserInput {
+export class VerifyEmailInput {
   @Field()
   email: string;
 
