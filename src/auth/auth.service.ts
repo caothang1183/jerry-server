@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CookieOptions } from 'express';
+import { CookieOptions, Response as Res } from 'express';
 import { omit } from 'lodash';
 import { Model } from 'mongoose';
 import { nanoid } from 'nanoid';
@@ -34,7 +34,7 @@ export class AuthService {
     if (!user) throw new Error('User does not exist');
     if (confirmToken !== user.confirmToken)
       throw new Error('Confirm Token is incorrect');
-    if (user.active) throw new Error('Account has  been activated');
+    if (user.active) throw new Error('Account has been activated');
     user.active = true;
     await user.save();
     return user;
@@ -54,7 +54,7 @@ export class AuthService {
     return user;
   }
 
-  async loginApi(input: LoginUserInput): Promise<object> {
+  async loginApi(res: Res, input: LoginUserInput): Promise<object> {
     const { username, password } = input;
     const user = await this.userModel
       .findOne({ username })
@@ -65,6 +65,8 @@ export class AuthService {
     if (!user.active) throw new Error('Please confirm your e-mail address');
     const data = omit(user.toJSON(), ['password'], ['active']);
     const jwt = signJwt(data);
+    res.cookie('token', jwt, cookieOptions);
+    console.log(res);
     return {
       user: data,
       'access-token': jwt,

@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Response  } from '@nestjs/common';
+import { Response as Res } from 'express';
 import { AuthService } from './auth.service';
 import { LoginUserInput } from './dto/inputs/login-user.input';
 import { RegisterUserInput } from './dto/inputs/register-user.input';
@@ -18,7 +19,7 @@ export class AuthController {
   }
 
   @Post('/login')
-  async login(@Body() data: LoginUserInput) {
-    return await this.authService.loginApi(data);
+  async login(@Response() res: Res, @Body() data: LoginUserInput) {
+    return await this.authService.loginApi(res, data);
   }
 }
