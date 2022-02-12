@@ -20,6 +20,10 @@ import { decode } from './utils/jwt.utils';
         if (user) set(req, 'user', user);
         return { req, res };
       },
+      cors: {
+        credentials: true,
+        origin: true,
+      },
     }),
     MongooseModule.forRoot(
       `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`,
