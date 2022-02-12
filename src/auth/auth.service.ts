@@ -10,8 +10,7 @@ import { User, UserDocument } from '../user/model/user.schema';
 import { LoginUserInput } from './dto/inputs/login-user.input';
 import { RegisterUserInput } from './dto/inputs/register-user.input';
 import { VerifyEmailInput } from './dto/inputs/verify-email.input';
-import { cookieOptions, setCookie } from '../helpers/cookie.helper';
-import { CookieModel } from 'src/helpers/cookie.model';
+import { deleteCookie, setCookie } from '../helpers/cookie.helper';
 
 @Injectable()
 export class AuthService {
@@ -54,7 +53,7 @@ export class AuthService {
   }
 
   async logout(context: Ctx) {
-    context.res.cookie('token', '', { ...cookieOptions, maxAge: 0 });
+    deleteCookie(context.res);
     return null;
   }
 
@@ -78,5 +77,10 @@ export class AuthService {
       user: data,
       'access-token': jwt,
     });
+  }
+
+  async logoutApi(res: Res) {
+    deleteCookie(res);
+    return null;
   }
 }

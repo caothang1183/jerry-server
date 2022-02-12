@@ -14,3 +14,9 @@ export const setCookie = (res: Res, data: CookieModel) => {
   res.cookie('token', data.token, cookieOptions);
   return res;
 };
+
+export const deleteCookie = (res: Res) => {
+  res.cookie('user', '', { ...cookieOptions, maxAge: 0 });
+  res.cookie('token', '', { ...cookieOptions, maxAge: 0 });
+  return res;
+};
