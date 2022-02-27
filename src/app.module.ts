@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { get, set } from 'lodash';
 import { decode } from './utils/jwt.utils';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { decode } from './utils/jwt.utils';
     ),
     AuthModule,
     UserModule,
+    RoleModule,
   ],
   controllers: [],
   providers: [],

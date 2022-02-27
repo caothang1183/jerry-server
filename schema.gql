@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Role {
+  _id: ID!
+  name: String!
+  description: String
+  users: [User!]!
+}
+
 type User {
   _id: ID!
   username: String!
@@ -10,17 +17,24 @@ type User {
   password: String!
   confirmToken: String!
   active: Boolean!
+  role: Role
 }
 
 type Query {
   me: User
-  users: [User!]!
+  getUsers: [User!]!
+  getUser(id: String, name: String): User!
+  getRoles: [Role!]!
+  getRole(id: String, name: String): Role!
 }
 
 type Mutation {
   registerUser(input: RegisterUserInput!): User!
   confirmUser(input: VerifyEmailInput!): User!
   login(input: LoginUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
+  createRole(input: CreateRoleInput!): Role!
+  updateRole(input: UpdateRoleInput!): Role!
 }
 
 input RegisterUserInput {
@@ -38,4 +52,23 @@ input VerifyEmailInput {
 input LoginUserInput {
   username: String!
   password: String!
+}
+
+input UpdateUserInput {
+  id: String
+  username: String
+  email: String
+  fullname: String
+  password: String
+}
+
+input CreateRoleInput {
+  name: String!
+  description: String!
+}
+
+input UpdateRoleInput {
+  id: String
+  name: String
+  description: String
 }

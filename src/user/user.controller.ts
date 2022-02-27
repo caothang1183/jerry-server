@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { UpdateUserInput } from './dto/inputs/update-user.input';
 import { UserDocument } from './model/user.schema';
 import { UserService } from './user.service';
 
@@ -7,7 +8,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async findAll(): Promise<UserDocument[]> {
-    return await this.userService.findAll();
+  findAll(): Promise<UserDocument[]> {
+    return this.userService.findAll();
+  }
+
+  @Post(':id')
+  update(@Param('id') id: string, @Body() user: UpdateUserInput) {
+    return this.userService.update(id, user);
   }
 }

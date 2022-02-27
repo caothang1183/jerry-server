@@ -2,6 +2,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import * as mongoose from 'mongoose';
+import { Role } from 'src/role/model/role.schema';
 
 @Schema()
 @ObjectType()
@@ -33,6 +34,10 @@ export class User {
   @Field()
   active: boolean;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Role.name })
+  @Field(() => Role, { nullable: true })
+  role?: Role | string;
+
   comparePassword: (candicatePassword: string) => boolean;
 }
 
@@ -55,8 +60,10 @@ UserSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ) {
   const user = this as UserDocument;
-  return bcrypt.compare(candidatePassword, user.password).catch((e) => {
-    console.log(e.message);
-    return false;
-  });
+  return await bcrypt
+    .compare(candidatePassword, user.password)
+    .catch((e) => {
+      console.log(e.message);
+      return false;
+    });
 };
